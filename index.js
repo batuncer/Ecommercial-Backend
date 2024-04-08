@@ -5,8 +5,16 @@ const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const PORT = 8080;
 const connectDB = require("./config/db.js");
+const product = require("./routes/product.js");
+const cloudinary = require("cloudinary").v2;
 
 dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 const app = express();
 app.use(cors());
@@ -16,9 +24,7 @@ app.use(cookieParser());
 
 connectDB();
 
-app.get("/products", (req, res) => {
-  res.status(200).json({ message: "Products" });
-});
+app.use("/", product);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
