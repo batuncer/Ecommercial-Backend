@@ -2,8 +2,14 @@ const User = require("../models/user.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("bcryptjs");
 const { response } = require("express");
+const cloudinary = require("cloudinary").v2;
 
 const register = async (req, res) => {
+  const avatar = await cloudinary.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 130,
+    crop: "scale",
+  });
   const { name, email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -18,7 +24,15 @@ const register = async (req, res) => {
       .json({ message: "Password must be at least 6 characters long" });
   }
 
-  const newUser = new User.create({ email, password: passwordHash });
+  const newUser = new User.create({
+    name,
+    email,
+    password: passwordHash,
+    avatar: {
+      public_id: avatar.public_id,
+      url: avatar.secure_url,
+    },
+  });
 
   const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
     expiresIn: 3600,
