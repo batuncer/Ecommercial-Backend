@@ -105,6 +105,7 @@ const updateProduct = async (req, res, next) => {
     }
 
     req.body.images = allImages;
+    req.body.user = req.user.id;
 
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,

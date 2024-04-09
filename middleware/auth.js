@@ -19,7 +19,7 @@ const authenticationMid = async (req, res, next) => {
 };
 
 const roleCheck = (...roles) => {
-  return (req, req, next) => {
+  return (req, res, next) => {
     if (!roles.includes(req.user.roles)) {
       return res
         .status(404)

@@ -7,7 +7,7 @@ const {
   updateProduct,
   createReview,
   adminProducts,
-} = require("../controllers/products.js");
+} = require("../controllers/product.js");
 const { authenticationMid, roleCheck } = require("../middleware/auth.js");
 
 const router = express.Router();
