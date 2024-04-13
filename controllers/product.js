@@ -2,6 +2,7 @@ const Product = require("../models/product.js");
 const ProductFilter = require("../utils/productFilter.js");
 const cloudinary = require("cloudinary").v2;
 
+// Get all products with filtering and pagination
 const productsAll = async (req, res) => {
   try {
     const resultPerPage = 10;
@@ -31,7 +32,7 @@ const productsDetails = async (req, res) => {
   }
 };
 
-//admins can
+// Create a new product (admins can)
 const createProduct = async (req, res, next) => {
   try {
     let images = [];
@@ -60,7 +61,7 @@ const createProduct = async (req, res, next) => {
     res.status(500).json({ message: err.message });
   }
 };
-
+// Delete a pruduct by ID
 const deleteProduct = async (req, res, next) => {
   try {
     //I dont use delete beacuse i want to delete the product with images
@@ -74,7 +75,7 @@ const deleteProduct = async (req, res, next) => {
     res.status(500).json({ message: err.message });
   }
 };
-
+//Update a product by ID
 const updateProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -118,6 +119,7 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+// Create a review for a product
 const createReview = async (req, res, next) => {
   const { productId, comment, rating } = req.body;
 
