@@ -29,7 +29,7 @@ class ProductFilter {
   // Method to filter products based on query parameters
   filter() {
     //a copy of the query string object
-    const queryCopy = { ...this.queryStr };
+    let queryCopy = { ...this.queryStr };
 
     // the query parameters that should not be included in the MongoDB query
     const deleteArea = ["keyword", "page", "limit"];
@@ -37,7 +37,7 @@ class ProductFilter {
     deleteArea.forEach((item) => delete queryCopy[item]);
 
     // Converting the query string object to a JSON string
-    const queryStr = JSON.stringify(queryCopy);
+    let queryStr = JSON.stringify(queryCopy);
 
     // Replacing query operators (gt, gte, lt, lte) with MongoDB operators ($gt, $gte, $lt, $lte)
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
@@ -63,4 +63,4 @@ class ProductFilter {
   }
 }
 
-model.exports = ProductFilter;
+module.exports = ProductFilter;

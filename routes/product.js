@@ -22,8 +22,7 @@ router.get(
 router.get("/products/:id", productsDetails);
 router.post(
   "/product/new",
-  authenticationMid,
-  roleCheck("admin"),
+
   createProduct
 );
 router.post("/product/newReview", authenticationMid, createReview);
