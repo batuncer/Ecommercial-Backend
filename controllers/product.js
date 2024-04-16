@@ -37,14 +37,15 @@ const createProduct = async (req, res, next) => {
   try {
     let images = [];
     if (typeof req.body.images === "string") {
-      images.push(req.body.images);
+      // Eğer sadece bir resim URL'si varsa, bunu bir diziye dönüştür
+      images.push({ url: req.body.images });
     } else {
       images = req.body.images;
     }
 
     let allImages = [];
     for (let i = 0; i < images.length; i++) {
-      const image = await cloudinary.uploader.upload(images[i], {
+      const image = await cloudinary.uploader.upload(images[i].url, {
         folder: "products",
       });
       allImages.push({
@@ -58,6 +59,7 @@ const createProduct = async (req, res, next) => {
     const product = await Product.create(req.body);
     res.status(201).json({ product });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err.message });
   }
 };
