@@ -11,7 +11,7 @@ const productsAll = async (req, res) => {
       .filter()
       .pagination(resultPerPage);
     const products = await productFilter.query;
-    res.status(200).json({ products });
+    res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -25,8 +25,8 @@ const adminProducts = async (req, res, next) => {
 
 const productsDetails = async (req, res) => {
   try {
-    const products = await Product.findById(req.params.id);
-    res.status(200).json({ products });
+    const product = await Product.findById(req.params.id);
+    res.status(200).json(product);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -37,7 +37,6 @@ const createProduct = async (req, res, next) => {
   try {
     let images = [];
     if (typeof req.body.images === "string") {
-      // Eğer sadece bir resim URL'si varsa, bunu bir diziye dönüştür
       images.push({ url: req.body.images });
     } else {
       images = req.body.images;
