@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
     },
@@ -19,11 +19,11 @@ const userSchema = new mongoose.Schema(
     avatar: {
       public_id: {
         type: String,
-        required: true,
+        required: false,
       },
       url: {
         type: String,
-        required: true,
+        required: false,
       },
     },
     role: {
