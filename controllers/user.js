@@ -1,21 +1,12 @@
 const User = require("../models/user.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const cloudinary = require("cloudinary").v2;
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
 // Register
 const register = async (req, res) => {
   try {
-    //Uploading user avatar to Cloudinary
-    const avatar = await cloudinary.uploader.upload(req.body.avatar, {
-      folder: "avatars",
-      width: 130,
-      crop: "scale",
-    });
-
-    // Extract user details from request body
     const { username, email, password } = req.body;
 
     // Checking if the email already exists in the database
@@ -33,15 +24,13 @@ const register = async (req, res) => {
     }
 
     // Create a new user object with hashed password and uploaded avatar
-    const newUser = await User.create({
+    const userDto = {
       username,
       email,
       password: passwordHash,
-      avatar: {
-        public_id: avatar.public_id,
-        url: avatar.secure_url,
-      },
-    });
+    };
+
+    const newUser = await User.create(userDto);
 
     // Generate JWT token for authentication
     const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET, {
@@ -68,10 +57,10 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     //Extrat user details from the request body
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ message: "User does not exist" });
     }

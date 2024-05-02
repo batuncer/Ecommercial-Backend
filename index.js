@@ -8,7 +8,6 @@ const connectDB = require("./config/db.js");
 const product = require("./routes/product.js");
 const cloudinary = require("cloudinary").v2;
 const user = require("./routes/user.js");
-
 dotenv.config();
 
 cloudinary.config({
