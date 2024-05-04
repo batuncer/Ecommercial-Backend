@@ -1,21 +1,28 @@
 const User = require("../models/user.js");
 const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET;
 
 const authenticationMid = async (req, res, next) => {
-  const { token } = req.cookies;
+  let token = req.headers["x-access-token"] || req.headers["authorization"];
 
   if (!token) {
-    return res.status(500).json({ message: "You are not logged in" });
+    return res
+      .status(401)
+      .json({ message: "Access denied. No token provided." });
   }
 
-  const decodedData = jwt.verify(token, { secret });
-
-  if (!decodedData) {
-    return res.status(500).json({ message: "You are not logged in" });
+  if (token.startsWith("Bearer ") || token.startsWith("bearer ")) {
+    token = token.slice(7, token.length).trimLeft();
   }
 
-  req.user = await User.findById(decodedData.id);
-  next();
+  try {
+    const decodedData = jwt.verify(token, secret);
+    req.user = await User.findById(decodedData.id);
+    next();
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    return res.status(401).json({ message: "Invalid token." });
+  }
 };
 
 const roleCheck = (...roles) => {

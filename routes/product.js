@@ -20,18 +20,9 @@ router.get(
   adminProducts
 );
 router.get("/products/:id", productsDetails);
-router.post(
-  "/product/new",
-
-  createProduct
-);
+router.post("/product/new", createProduct);
 router.post("/product/newReview", authenticationMid, createReview);
-router.delete(
-  "/products/:id",
-  authenticationMid,
-  roleCheck("admin"),
-  deleteProduct
-);
+router.delete("/products/:id", authenticationMid, deleteProduct);
 router.put(
   "/products/:id",
   authenticationMid,

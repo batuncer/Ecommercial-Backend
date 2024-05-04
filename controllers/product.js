@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Product = require("../models/product.js");
 const ProductFilter = require("../utils/productFilter.js");
 const cloudinary = require("cloudinary").v2;
@@ -70,7 +71,9 @@ const deleteProduct = async (req, res, next) => {
     for (let i = 0; i < product.images.length; i++) {
       await cloudinary.uploader.destroy(product.images[i].public_id);
     }
-    await product.remove();
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    await Product.deleteOne(id);
+    //await product.remove();
     res.status(200).json("Item is successfully deleted");
   } catch (err) {
     res.status(500).json({ message: err.message });
