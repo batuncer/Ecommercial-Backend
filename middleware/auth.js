@@ -17,7 +17,8 @@ const authenticationMid = async (req, res, next) => {
 
   try {
     const decodedData = jwt.verify(token, secret);
-    req.user = await User.findById(decodedData.id);
+    console.log(`decodedData`, decodedData);
+    req.user = await User.findById(decodedData._id);
     next();
   } catch (error) {
     console.error("JWT verification error:", error);

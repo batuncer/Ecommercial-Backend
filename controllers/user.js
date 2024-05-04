@@ -194,8 +194,9 @@ const logout = async (req, res) => {
 
 const userDetails = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
-    res.status(200).json({ user });
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
