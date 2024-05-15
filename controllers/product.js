@@ -35,29 +35,28 @@ const productsDetails = async (req, res) => {
 
 // Create a new product (admins can)
 const createProduct = async (req, res, next) => {
+  const { name, description, price, stock, category, images } = req.body;
+  console.log(req.body);
+  console.log(req.body.images);
   try {
-    let images = [];
-    if (typeof req.body.images === "string") {
-      images.push({ url: req.body.images });
-    } else {
-      images = req.body.images;
-    }
-
-    let allImages = [];
-    for (let i = 0; i < images.length; i++) {
-      const image = await cloudinary.uploader.upload(images[i].url, {
-        folder: "products",
+    if (images) {
+      const uploadRes = await cloudinary.uploader.upload(images, {
+        upload_preset: "llziyrzj",
       });
-      allImages.push({
-        public_id: image.public_id,
-        url: image.secure_url,
-      });
+      if (uploadRes) {
+        const product = new Product({
+          name,
+          description,
+          price,
+          stock,
+          category,
+          images: uploadRes,
+        });
+        console.log(uploadRes);
+        const saveProduct = await product.save();
+        res.status(200).send(saveProduct);
+      }
     }
-
-    req.body.images = allImages;
-
-    const product = await Product.create(req.body);
-    res.status(201).json({ product });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });
