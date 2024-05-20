@@ -3,12 +3,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-const PORT = process.env.PORT || 8080;
 const connectDB = require("./config/db.js");
 const product = require("./routes/product.js");
 const cloudinary = require("cloudinary").v2;
 const user = require("./routes/user.js");
 dotenv.config();
+const PORT = process.env.PORT || 8080;
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
