@@ -202,6 +202,15 @@ const userDetails = async (req, res, next) => {
   }
 };
 
+const findById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -209,4 +218,5 @@ module.exports = {
   resetPassword,
   logout,
   userDetails,
+  findById,
 };

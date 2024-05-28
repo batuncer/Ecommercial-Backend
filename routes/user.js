@@ -6,6 +6,7 @@ const {
   resetPassword,
   forgotPassword,
   userDetails,
+  findById,
 } = require("../controllers/user.js");
 const { authenticationMid } = require("../middleware/auth.js");
 
@@ -17,5 +18,6 @@ router.get("/logout", logout);
 router.post("/forgotPassword", forgotPassword);
 router.post("/resetPassword/:token", resetPassword);
 router.get("/me", authenticationMid, userDetails);
+router.get("/user/:id", findById);
 
 module.exports = router;
